@@ -8,12 +8,11 @@ namespace VirtualMeetingMonitor
 {
     public partial class Form : System.Windows.Forms.Form
     {
-        private OnAirSign onAirSign = new OnAirSign();
-        private Network network = new Network();
-        private VirtualMeeting meeting = new VirtualMeeting();
-        Timer timer = new Timer();
-        string LogFileName = "meetings.txt";
-
+        private readonly OnAirSign onAirSign = new OnAirSign();
+        private readonly Network network = new Network();
+        private readonly VirtualMeeting meeting = new VirtualMeeting();
+        readonly Timer timer = new Timer();
+        private const string LogFileName = "meetings.txt";
 
 
         public Form()

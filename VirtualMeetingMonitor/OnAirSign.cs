@@ -6,7 +6,7 @@ namespace VirtualMeetingMonitor
     internal class OnAirSign
     {
 
-        private string url = "http://onair.local";
+        private readonly string url = "http://onair.local";
 
 
         class LightRGB

@@ -11,7 +11,7 @@ namespace VirtualMeetingMonitor
         private Socket mainSocket;
         private IPAddress localIp;
         private string subnetMask = "";
-        private byte[] byteData = new byte[65507];
+        private readonly byte[] byteData = new byte[65507];
 
         public delegate void Notify(IPHeader ipHeader);  // delegate
 
