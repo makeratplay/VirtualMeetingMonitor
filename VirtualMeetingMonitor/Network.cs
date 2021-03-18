@@ -40,7 +40,7 @@ namespace VirtualMeetingMonitor
 
             //Bind the socket to the selected IP address
             mainSocket.Bind(new IPEndPoint(localIp, 0));
-            subnetMask = string.Format("{0}.{1}.{2}.", localIp.GetAddressBytes()[0], localIp.GetAddressBytes()[1], localIp.GetAddressBytes()[2]);
+            subnetMask = $"{localIp.GetAddressBytes()[0]}.{localIp.GetAddressBytes()[1]}.{localIp.GetAddressBytes()[2]}.";
 
             //Set the socket  options
             mainSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
