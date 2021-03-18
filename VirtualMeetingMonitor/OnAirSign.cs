@@ -5,9 +5,7 @@ namespace VirtualMeetingMonitor
 {
     internal class OnAirSign
     {
-
         private readonly string url = "http://onair.local";
-
 
         class LightRGB
         {
@@ -20,48 +18,19 @@ namespace VirtualMeetingMonitor
             public byte Red { get; set; }
             public byte Green { get; set; }
             public byte Blue { get; set; }
-        };
-
-        public OnAirSign()
-        {
-
         }
 
+        public bool TurnOn(byte red, byte green, byte blue) => CallAPI(new LightRGB(red, green, blue)) == HttpStatusCode.OK;
 
-        public bool TurnOn(byte red, byte green, byte blue)
-        {
-            var retVal = false;
-            var body = new LightRGB(red, green, blue);
-            if (CallAPI(body) == HttpStatusCode.OK)
-            {
-                retVal = true;
-            }
-            return retVal;
-        }
-
-        public bool TurnOff()
-        {
-            var retVal = false;
-            var body = new LightRGB( 0, 0, 0);
-            if ( CallAPI(body) == HttpStatusCode.OK )
-            {
-                retVal = true;
-            }
-            return retVal;
-        }
-
+        public bool TurnOff() => CallAPI(new LightRGB(0, 0, 0)) == HttpStatusCode.OK;
+        
         private HttpStatusCode CallAPI( LightRGB body )
         {
-            HttpStatusCode statusCode = 0;
             var client = new RestClient(url);
-            var api = "/api/light/state";
+            const string api = "/api/light/state";
             var request = new RestRequest(api, Method.POST);
             request.AddJsonBody(body);
-            var result = client.Execute(request);
-            statusCode = result.StatusCode;
-            return statusCode;
+            return client.Execute(request).StatusCode;
         }
-
     }
-
 }
