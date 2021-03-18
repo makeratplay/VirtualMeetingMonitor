@@ -1,0 +1,11 @@
+F:\Users\michael\Dropbox\Development\MakerAtPlayGitHubRepo\VirtualMeetingMonitor\VirtualMeetingMonitor\bin\Debug\VirtualMeetingMonitor.exe.config
+F:\Users\michael\Dropbox\Development\MakerAtPlayGitHubRepo\VirtualMeetingMonitor\VirtualMeetingMonitor\bin\Debug\VirtualMeetingMonitor.exe
+F:\Users\michael\Dropbox\Development\MakerAtPlayGitHubRepo\VirtualMeetingMonitor\VirtualMeetingMonitor\bin\Debug\VirtualMeetingMonitor.pdb
+F:\Users\michael\Dropbox\Development\MakerAtPlayGitHubRepo\VirtualMeetingMonitor\VirtualMeetingMonitor\bin\Debug\RestSharp.dll
+F:\Users\michael\Dropbox\Development\MakerAtPlayGitHubRepo\VirtualMeetingMonitor\VirtualMeetingMonitor\bin\Debug\RestSharp.xml
+F:\Users\michael\Dropbox\Development\MakerAtPlayGitHubRepo\VirtualMeetingMonitor\VirtualMeetingMonitor\obj\Debug\VirtualMeetingMonitor.Form.resources
+F:\Users\michael\Dropbox\Development\MakerAtPlayGitHubRepo\VirtualMeetingMonitor\VirtualMeetingMonitor\obj\Debug\VirtualMeetingMonitor.Properties.Resources.resources
+F:\Users\michael\Dropbox\Development\MakerAtPlayGitHubRepo\VirtualMeetingMonitor\VirtualMeetingMonitor\obj\Debug\VirtualMeetingMonitor.csproj.GenerateResource.Cache
+F:\Users\michael\Dropbox\Development\MakerAtPlayGitHubRepo\VirtualMeetingMonitor\VirtualMeetingMonitor\obj\Debug\VirtualMeetingMonitor.exe
+F:\Users\michael\Dropbox\Development\MakerAtPlayGitHubRepo\VirtualMeetingMonitor\VirtualMeetingMonitor\obj\Debug\VirtualMeetingMonitor.pdb
+F:\Users\michael\Dropbox\Development\MakerAtPlayGitHubRepo\VirtualMeetingMonitor\VirtualMeetingMonitor\obj\Debug\VirtualMeetingMonitor.csprojResolveAssemblyReference.cache
