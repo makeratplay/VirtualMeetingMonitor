@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Linq;
 
 namespace VirtualMeetingMonitor
 {
-    
-
     class VirtualMeeting
     {
       readonly string[] ZoomIps = { "3.7.", "3.21.", "3.22.", "3.23.", "3.25.", "3.80.", "3.96.", "3.101.", "3.104.", "3.120.", "3.127.", "3.208.",
@@ -77,102 +76,28 @@ namespace VirtualMeetingMonitor
 
         public string GetMeetingType()
         {
-            var RetVal = "Unknown";
-
-            if (IsTeamsMeeting())
-            { 
-                RetVal = "Teams";
-            }
-            else if ( IsWebExMeeting())
-            {
-                RetVal = "WebEx";
-            }
-            else if ( IsZoomMeeting() )
-            {
-                RetVal = "Zoom";
-            }
-            else if (IsDiscordMeeting() )
-            {
-                RetVal = "Discord";
-            }
-            return RetVal;
+          return
+            IsTeamsMeeting() ? "Teams" :
+            IsWebExMeeting() ? "WebEx" :
+            IsZoomMeeting() ? "Zoom" :
+            IsDiscordMeeting() ? "Discord" : "Unknown";
         }
 
-        public bool IsTeamsMeeting()
-        {
-            var retVal = false;
-            for (var i = 0; i < MSTeamsIps.Length; i++)
-            {
-                if (MeetingIp.StartsWith(MSTeamsIps[i]))
-                {
-                    retVal = true;
-                    break;
-                }
-            }
-            return retVal;
-        }
+        public bool IsTeamsMeeting() => MSTeamsIps.Any(t => MeetingIp.StartsWith(t));
 
-        public bool IsWebExMeeting()
-        {
-            var retVal = false;
-            for (var i = 0; i < WebExIps.Length; i++)
-            {
-                if (MeetingIp.StartsWith(WebExIps[i]))
-                {
-                    retVal = true;
-                    break;
-                }
-            }
-            return retVal;
-        }
+        public bool IsWebExMeeting() => WebExIps.Any(t => MeetingIp.StartsWith(t));
 
-        public bool IsZoomMeeting()
-        {
-            var retVal = false;
-            for (var i = 0; i < ZoomIps.Length; i++)
-            {
-                if (MeetingIp.StartsWith(ZoomIps[i]))
-                {
-                    retVal = true;
-                    break;
-                }
-            }
-            return retVal;
-        }
+        public bool IsZoomMeeting() => ZoomIps.Any(t => MeetingIp.StartsWith(t));
 
-        public bool IsDiscordMeeting()
-        {
-            var retVal = false;
-            for (var i = 0; i < DiscordIps.Length; i++)
-            {
-                if (MeetingIp.StartsWith(DiscordIps[i]))
-                {
-                    retVal = true;
-                    break;
-                }
-            }
-            return retVal;
-        }
+        public bool IsDiscordMeeting() => DiscordIps.Any(t => MeetingIp.StartsWith(t));
 
-        public string GetIP()
-        {
-            return MeetingIp;
-        }
+        public string GetIP() => MeetingIp;
 
-        public int GetUdpTotal()
-        {
-            return UdpTotal;
-        }
+        public int GetUdpTotal() => UdpTotal;
+        
+        public int GetUdpInbound() => UdpInbound;
 
-        public int GetUdpInbound()
-        {
-            return UdpInbound;
-        }
-
-        public int GetUdpOutbound()
-        {
-            return UdpOutbound;
-        }
+        public int GetUdpOutbound() => UdpOutbound;
 
         private void RestUdpCounts()
         {
@@ -180,6 +105,5 @@ namespace VirtualMeetingMonitor
             UdpOutbound = 0;
             UdpTotal = 0;
         }
-
     }
 }
