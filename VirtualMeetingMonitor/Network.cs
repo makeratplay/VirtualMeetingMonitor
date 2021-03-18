@@ -53,7 +53,7 @@ namespace VirtualMeetingMonitor
             mainSocket.IOControl(IOControlCode.ReceiveAll, True, Out);
 
             //Start receiving the packets asynchronously
-            mainSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, new AsyncCallback(OnReceive), null);
+            mainSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, OnReceive, null);
         }
 
         public void Stop()
@@ -76,7 +76,7 @@ namespace VirtualMeetingMonitor
             try
             {
                 //Another call to BeginReceive so that we continue to receive the incoming packets
-                mainSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, new AsyncCallback(OnReceive), null);
+                mainSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, OnReceive, null);
             }
             catch (ObjectDisposedException)
             {
