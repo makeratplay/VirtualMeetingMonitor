@@ -3,9 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 
 namespace VirtualMeetingMonitor
-{
-    
-
+{    
     class Network
     {
         private Socket mainSocket;
@@ -21,10 +19,10 @@ namespace VirtualMeetingMonitor
         public void StartListening()
         {
 
-            IPHostEntry HosyEntry = Dns.GetHostEntry((Dns.GetHostName()));
+            var HosyEntry = Dns.GetHostEntry((Dns.GetHostName()));
             if (HosyEntry.AddressList.Length > 0)
             {
-                foreach (IPAddress ip in HosyEntry.AddressList)
+                foreach (var ip in HosyEntry.AddressList)
                 {
                     if (ip.AddressFamily == AddressFamily.InterNetwork)
                     {
@@ -45,8 +43,8 @@ namespace VirtualMeetingMonitor
             //Set the socket  options
             mainSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
 
-            byte[] True = new byte[4] { 1, 0, 0, 0 };
-            byte[] Out = new byte[4] { 1, 0, 0, 0 }; //Capture outgoing packets
+            var True = new byte[4] { 1, 0, 0, 0 };
+            var Out = new byte[4] { 1, 0, 0, 0 }; //Capture outgoing packets
 
             //Socket.IOControl is analogous to the WSAIoctl method of Winsock 2
             // The current user must belong to the Administrators group on the local computer
@@ -65,7 +63,7 @@ namespace VirtualMeetingMonitor
         {
             try
             {
-                int nReceived = mainSocket.EndReceive(ar);
+                var nReceived = mainSocket.EndReceive(ar);
                 ParseData(byteData, nReceived);
             }
             catch (Exception ex)
@@ -85,7 +83,7 @@ namespace VirtualMeetingMonitor
 
         private void ParseData(byte[] byteData, int nReceived)
         {
-            IPHeader ipHeader = new IPHeader(byteData, nReceived, localIp);
+            var ipHeader = new IPHeader(byteData, nReceived, localIp);
             if (isOutsideUDPTaffice(ipHeader))
             {
                 OutsideUDPTafficeReceived?.Invoke(ipHeader);
@@ -95,7 +93,7 @@ namespace VirtualMeetingMonitor
 
         private bool isOutsideUDPTaffice(IPHeader ipHeader)
         {
-            bool retVal = false;
+            var retVal = false;
             if (ipHeader.IsUDP() && !ipHeader.IsMulticast() && !ipHeader.IsBroadcast())
             {
                 if (ipHeader.SourceAddress.Equals(localIp) || ipHeader.DestinationAddress.Equals(localIp))

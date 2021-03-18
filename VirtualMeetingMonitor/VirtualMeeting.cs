@@ -77,7 +77,7 @@ namespace VirtualMeetingMonitor
 
         public string GetMeetingType()
         {
-            string RetVal = "Unknown";
+            var RetVal = "Unknown";
 
             if (IsTeamsMeeting())
             { 
@@ -100,8 +100,8 @@ namespace VirtualMeetingMonitor
 
         public bool IsTeamsMeeting()
         {
-            bool retVal = false;
-            for (int i = 0; i < MSTeamsIps.Length; i++)
+            var retVal = false;
+            for (var i = 0; i < MSTeamsIps.Length; i++)
             {
                 if (MeetingIp.StartsWith(MSTeamsIps[i]))
                 {
@@ -114,8 +114,8 @@ namespace VirtualMeetingMonitor
 
         public bool IsWebExMeeting()
         {
-            bool retVal = false;
-            for (int i = 0; i < WebExIps.Length; i++)
+            var retVal = false;
+            for (var i = 0; i < WebExIps.Length; i++)
             {
                 if (MeetingIp.StartsWith(WebExIps[i]))
                 {
@@ -128,8 +128,8 @@ namespace VirtualMeetingMonitor
 
         public bool IsZoomMeeting()
         {
-            bool retVal = false;
-            for (int i = 0; i < ZoomIps.Length; i++)
+            var retVal = false;
+            for (var i = 0; i < ZoomIps.Length; i++)
             {
                 if (MeetingIp.StartsWith(ZoomIps[i]))
                 {
@@ -142,8 +142,8 @@ namespace VirtualMeetingMonitor
 
         public bool IsDiscordMeeting()
         {
-            bool retVal = false;
-            for (int i = 0; i < DiscordIps.Length; i++)
+            var retVal = false;
+            for (var i = 0; i < DiscordIps.Length; i++)
             {
                 if (MeetingIp.StartsWith(DiscordIps[i]))
                 {
