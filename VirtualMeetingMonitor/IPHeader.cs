@@ -61,8 +61,6 @@ namespace VirtualMeetingMonitor
             }
         }
 
-        public bool IsTCP() => Protocol == 6;
-
         public bool IsUDP() => Protocol == 17;
 
         public IPAddress SourceAddress => new IPAddress(SourceIPAddress);
