@@ -20,12 +20,12 @@ namespace VirtualMeetingMonitor
         {
             InitializeComponent();
 
-            notifyIcon.Text = this.Text;
+            notifyIcon.Text = Text;
             notifyIcon.ContextMenuStrip = contextMenuStrip;
 
             timer.Interval = 1000;
             timer.Enabled = true;
-            timer.Tick += new System.EventHandler(OnTimerEvent);
+            timer.Tick += OnTimerEvent;
 
             network.OutsideUDPTafficeReceived += Network_OutsideUDPTafficeReceived;
             network.StartListening();
@@ -41,7 +41,7 @@ namespace VirtualMeetingMonitor
             InboundTxt.Text = "";
             OutboundTxt.Text = "";
             TotalTxt.Text = "";
-            this.BackColor = Color.DarkGray;
+            BackColor = Color.DarkGray;
         }
 
         private void Network_OutsideUDPTafficeReceived(IPHeader ipHeader)
@@ -76,10 +76,10 @@ namespace VirtualMeetingMonitor
 
             onAirSign.TurnOn(red, green, blue);
             LogMeeting("Started");
-            this.BackColor = Color.Green;
+            BackColor = Color.Green;
 
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form));
-            notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            notifyIcon.Icon = ((Icon)(resources.GetObject("$this.Icon")));
 
             meetingTxt.Text = meeting.GetMeetingType();
             startedTxt.Text = DateTime.Now.ToString("MM/dd H:mm:ss");
@@ -91,12 +91,12 @@ namespace VirtualMeetingMonitor
         {
             onAirSign.TurnOff();
             LogMeeting("Ended  ");
-            this.BackColor = Color.DarkGray;
+            BackColor = Color.DarkGray;
 
             EnedTxt.Text = DateTime.Now.ToString("MM/dd H:mm:ss");
 
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form));
-            notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            notifyIcon.Icon = ((Icon)(resources.GetObject("notifyIcon.Icon")));
         }
 
         private void LogMeeting(string Msg)
@@ -111,17 +111,17 @@ namespace VirtualMeetingMonitor
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
-            if (this.WindowState == FormWindowState.Minimized)
+            if (WindowState == FormWindowState.Minimized)
             {
                 Show();
-                this.WindowState = FormWindowState.Normal;
+                WindowState = FormWindowState.Normal;
             }
-            this.Activate();
+            Activate();
         }
 
         private void onAirOnToolStripMenuItem_Click(object sender, EventArgs e)
@@ -156,12 +156,12 @@ namespace VirtualMeetingMonitor
             pi.FileName = LogFileName;
             pi.Verb = "EDIT";
 
-            System.Diagnostics.Process.Start(pi);
+            Process.Start(pi);
         }
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            if (this.WindowState == FormWindowState.Minimized)
+            if (WindowState == FormWindowState.Minimized)
             {
                 Hide();
                 //notifyIcon.Visible = true;
