@@ -61,62 +61,18 @@ namespace VirtualMeetingMonitor
             }
         }
 
-        public bool IsTCP()
-        {
-            return Protocol == 6;
-        }
+        public bool IsTCP() => Protocol == 6;
 
-        public bool IsUDP()
-        {
-            return Protocol == 17;
-        }
+        public bool IsUDP() => Protocol == 17;
 
-        public IPAddress SourceAddress
-        {
-            get
-            {
-                return new IPAddress(SourceIPAddress);
-            }
-        }
+        public IPAddress SourceAddress => new IPAddress(SourceIPAddress);
 
-        public IPAddress DestinationAddress
-        {
-            get
-            {
-                return new IPAddress(DestinationIPAddress);
-            }
-        }
+        public IPAddress DestinationAddress => new IPAddress(DestinationIPAddress);
 
-        public bool IsMulticast()
-        {
-            bool retVal = false;
-            // Addresses starting with a number between 224 and 239 are used for IP multicast
-            if (DestinationAddress.GetAddressBytes()[0] >= 224 && DestinationAddress.GetAddressBytes()[0] <= 239)
-            {
-                retVal = true;
-            }
-            return retVal;
-        }
+        public bool IsMulticast() => DestinationAddress.GetAddressBytes()[0] >= 224 && DestinationAddress.GetAddressBytes()[0] <= 239;
+        
+        public bool IsBroadcast() => DestinationAddress.ToString() == "255.255.255.255";
 
-        public bool IsBroadcast()
-        {
-            bool retVal = false;
-            // Addresses 255.255.255.255 is broadcast
-            if (DestinationAddress.ToString() == "255.255.255.255")
-            {
-                retVal = true;
-            }
-            return retVal;
-        }
-
-        public bool InBound()
-        {
-            bool retVal = false;
-            if (DestinationAddress.ToString() == localIp.ToString())
-            {
-                retVal = true;
-            }
-            return retVal;
-        }
+        public bool InBound() => DestinationAddress.ToString() == localIp.ToString();
     }
 }
