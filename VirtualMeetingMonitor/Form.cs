@@ -101,7 +101,7 @@ namespace VirtualMeetingMonitor
 
         private void LogMeeting(string Msg)
         {
-            string logEntry = String.Format("{0}: {1} - {2} {3}", DateTime.Now.ToString("MM/dd H:mm:ss"), Msg, meeting.GetIP(), meeting.GetMeetingType());
+            string logEntry = $"{DateTime.Now:MM/dd H:mm:ss}: {Msg} - {meeting.GetIP()} {meeting.GetMeetingType()}";
             using (StreamWriter w = File.AppendText( LogFileName ))
             {
                 w.WriteLine(logEntry);
