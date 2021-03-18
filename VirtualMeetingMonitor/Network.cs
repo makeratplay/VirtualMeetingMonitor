@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 
@@ -20,18 +21,11 @@ namespace VirtualMeetingMonitor
         {
 
             var HosyEntry = Dns.GetHostEntry((Dns.GetHostName()));
-            if (HosyEntry.AddressList.Length > 0)
+            if (HosyEntry.AddressList.Any())
             {
-                foreach (var ip in HosyEntry.AddressList)
-                {
-                    if (ip.AddressFamily == AddressFamily.InterNetwork)
-                    {
-                        localIp = ip;
-                        break;
-                    }
-                }
+              localIp = HosyEntry.AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
             }
-
+            
             //For sniffing the socket to capture the packets has to be a raw socket, with the
             //address family being of type internetwork, and protocol being IP
             mainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
@@ -43,8 +37,8 @@ namespace VirtualMeetingMonitor
             //Set the socket  options
             mainSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
 
-            var True = new byte[4] { 1, 0, 0, 0 };
-            var Out = new byte[4] { 1, 0, 0, 0 }; //Capture outgoing packets
+            var True = new byte[] { 1, 0, 0, 0 };
+            var Out = new byte[] { 1, 0, 0, 0 }; //Capture outgoing packets
 
             //Socket.IOControl is analogous to the WSAIoctl method of Winsock 2
             // The current user must belong to the Administrators group on the local computer
@@ -93,18 +87,12 @@ namespace VirtualMeetingMonitor
 
         private bool isOutsideUDPTaffice(IPHeader ipHeader)
         {
-            var retVal = false;
-            if (ipHeader.IsUDP() && !ipHeader.IsMulticast() && !ipHeader.IsBroadcast())
-            {
-                if (ipHeader.SourceAddress.Equals(localIp) || ipHeader.DestinationAddress.Equals(localIp))
-                {
-                    if (ipHeader.SourceAddress.ToString().StartsWith(subnetMask) == false || ipHeader.DestinationAddress.ToString().StartsWith(subnetMask) == false)
-                    {
-                        retVal = true;
-                    }
-                }
-            }
-            return retVal;
+            if (!ipHeader.IsUDP() || ipHeader.IsMulticast() || ipHeader.IsBroadcast()) 
+              return false;
+            if (!ipHeader.SourceAddress.Equals(localIp) && !ipHeader.DestinationAddress.Equals(localIp)) 
+              return false;
+            
+            return ipHeader.SourceAddress.ToString().StartsWith(subnetMask) == false || ipHeader.DestinationAddress.ToString().StartsWith(subnetMask) == false;
         }
 
 
