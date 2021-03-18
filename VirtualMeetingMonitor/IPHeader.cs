@@ -13,13 +13,13 @@ namespace VirtualMeetingMonitor
         private ushort Identification;         //Sixteen bits for identification
         private ushort FlagsAndOffset;         //Sixteen bits for flags and fragmentation offset
         private byte TTL;                      //Eight bits for TTL (Time To Live)
-        private byte Protocol;                 //Eight bits for the underlying protocol
+        private readonly byte Protocol;                 //Eight bits for the underlying protocol
         private short Checksum;                //Sixteen bits containing the checksum of the header (checksum can be negative so taken as short)
-        private uint SourceIPAddress;        //Thirty two bits for the source IP Address
-        private uint DestinationIPAddress;   //Thirty two bits for destination IP Address
+        private readonly uint SourceIPAddress;        //Thirty two bits for the source IP Address
+        private readonly uint DestinationIPAddress;   //Thirty two bits for destination IP Address
                                                  
 
-        private IPAddress localIp;
+        private readonly IPAddress localIp;
 
         public IPHeader(byte[] byBuffer, int nReceived, IPAddress localIp)
         {
