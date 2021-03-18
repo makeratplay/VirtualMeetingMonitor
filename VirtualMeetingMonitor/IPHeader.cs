@@ -21,9 +21,9 @@ namespace VirtualMeetingMonitor
             try
             {
                 //Create MemoryStream out of the received bytes
-                MemoryStream memoryStream = new MemoryStream(byBuffer, 0, nReceived);
+                var memoryStream = new MemoryStream(byBuffer, 0, nReceived);
                 //Next we create a BinaryReader out of the MemoryStream
-                BinaryReader binaryReader = new BinaryReader(memoryStream);
+                var binaryReader = new BinaryReader(memoryStream);
 
                 //The first eight bits of the IP header contain the version and
                 //header length so we read them

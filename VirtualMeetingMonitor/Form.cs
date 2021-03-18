@@ -77,7 +77,7 @@ namespace VirtualMeetingMonitor
             LogMeeting("Started");
             BackColor = Color.Green;
 
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(Form));
             notifyIcon.Icon = ((Icon)(resources.GetObject("$this.Icon")));
 
             meetingTxt.Text = meeting.GetMeetingType();
@@ -94,14 +94,14 @@ namespace VirtualMeetingMonitor
 
             EnedTxt.Text = DateTime.Now.ToString("MM/dd H:mm:ss");
 
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(Form));
             notifyIcon.Icon = ((Icon)(resources.GetObject("notifyIcon.Icon")));
         }
 
         private void LogMeeting(string Msg)
         {
-            string logEntry = $"{DateTime.Now:MM/dd H:mm:ss}: {Msg} - {meeting.GetIP()} {meeting.GetMeetingType()}";
-            using (StreamWriter w = File.AppendText( LogFileName ))
+            var logEntry = $"{DateTime.Now:MM/dd H:mm:ss}: {Msg} - {meeting.GetIP()} {meeting.GetMeetingType()}";
+            using (var w = File.AppendText( LogFileName ))
             {
                 w.WriteLine(logEntry);
             }
@@ -148,7 +148,7 @@ namespace VirtualMeetingMonitor
 
         private void openLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ProcessStartInfo pi = new ProcessStartInfo(LogFileName);
+            var pi = new ProcessStartInfo(LogFileName);
             pi.Arguments = Path.GetFileName(LogFileName);
             pi.UseShellExecute = true;
             pi.WorkingDirectory = Path.GetDirectoryName(LogFileName);
