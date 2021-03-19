@@ -21,7 +21,17 @@ namespace VirtualMeetingMonitor
         {
 
             SetupLocalIp();
+            ConfigureSocket();
 
+            //Start receiving the packets asynchronously
+            mainSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, OnReceive, null);
+        }
+
+        /// <summary>
+        /// Configures the listening socket
+        /// </summary>
+        private void ConfigureSocket()
+        {
             //For sniffing the socket to capture the packets has to be a raw socket, with the
             //address family being of type internetwork, and protocol being IP
             mainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
@@ -33,15 +43,12 @@ namespace VirtualMeetingMonitor
             //Set the socket  options
             mainSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
 
-            byte[] True = new byte[] { 1, 0, 0, 0 };
-            byte[] Out = new byte[] { 1, 0, 0, 0 }; //Capture outgoing packets
+            byte[] True = new byte[] {1, 0, 0, 0};
+            byte[] Out = new byte[] {1, 0, 0, 0}; //Capture outgoing packets
 
             //Socket.IOControl is analogous to the WSAIoctl method of Winsock 2
             // The current user must belong to the Administrators group on the local computer
             mainSocket.IOControl(IOControlCode.ReceiveAll, True, Out);
-
-            //Start receiving the packets asynchronously
-            mainSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, OnReceive, null);
         }
 
         /// <summary>
