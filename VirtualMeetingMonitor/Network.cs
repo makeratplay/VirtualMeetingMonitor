@@ -20,18 +20,7 @@ namespace VirtualMeetingMonitor
         public void StartListening()
         {
 
-            IPHostEntry HosyEntry = Dns.GetHostEntry((Dns.GetHostName()));
-            if (HosyEntry.AddressList.Any())
-            {
-                foreach (IPAddress ip in HosyEntry.AddressList)
-                {
-                    if (ip.AddressFamily == AddressFamily.InterNetwork)
-                    {
-                        localIp = ip;
-                        break;
-                    }
-                }
-            }
+            SetupLocalIp();
 
             //For sniffing the socket to capture the packets has to be a raw socket, with the
             //address family being of type internetwork, and protocol being IP
@@ -53,6 +42,26 @@ namespace VirtualMeetingMonitor
 
             //Start receiving the packets asynchronously
             mainSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, OnReceive, null);
+        }
+
+        /// <summary>
+        /// Set up a local IP address from the list of available addresses.
+        /// The first available IPv4 is chosen as the local IP address.
+        /// </summary>
+        private void SetupLocalIp()
+        {
+            IPHostEntry HosyEntry = Dns.GetHostEntry((Dns.GetHostName()));
+            if (HosyEntry.AddressList.Any())
+            {
+                foreach (IPAddress ip in HosyEntry.AddressList)
+                {
+                    if (ip.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        localIp = ip;
+                        break;
+                    }
+                }
+            }
         }
 
         public void Stop()
