@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace VirtualMeetingMonitor
@@ -13,7 +14,7 @@ namespace VirtualMeetingMonitor
         private readonly VirtualMeeting meeting = new VirtualMeeting();
         readonly Timer timer = new Timer();
         private const string LogFileName = "meetings.txt";
-
+        private Task networkListener;
 
         public Form()
         {
@@ -27,7 +28,7 @@ namespace VirtualMeetingMonitor
             timer.Tick += OnTimerEvent;
 
             network.OutsideUDPTafficeReceived += Network_OutsideUDPTafficeReceived;
-            network.StartListening();
+            networkListener = network.StartListening();
 
             meeting.OnMeetingStarted += Meeting_OnMeetingStarted;
             meeting.OnMeetingEnded += Meeting_OnMeetingEnded;
@@ -141,9 +142,11 @@ namespace VirtualMeetingMonitor
             meeting.CheckMeetingStatus();
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private async void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             network.Stop();
+            //By awaiting the network listening task, we ensure that the task can be disposed, releasing its resources.
+            await networkListener;
         }
 
         private void openLogToolStripMenuItem_Click(object sender, EventArgs e)

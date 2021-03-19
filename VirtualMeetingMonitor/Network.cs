@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace VirtualMeetingMonitor
 {
@@ -17,18 +18,50 @@ namespace VirtualMeetingMonitor
         public event Notify OutsideUDPTafficeReceived;
 
 
-        public void StartListening()
+        public async Task StartListening()
         {
-
             SetupLocalIp();
             ConfigureSocket();
 
             //Start receiving the packets asynchronously
-            mainSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, OnReceive, null);
+            await ProcessPackets();
         }
 
         /// <summary>
-        /// Configures the listening socket
+        /// Use the socket to receive data. Simply loop until the socket is disposed.
+        /// </summary>
+        /// <returns></returns>
+        private async Task ProcessPackets()
+        {
+            //Declare the buffer outside the loop so that do not recreate it every time we go around the loop.
+            ArraySegment<byte> buffer = new ArraySegment<byte>(byteData);
+
+            while (true)
+            {
+                try
+                {
+                    // At this point the socket will wait for data to arrive. Awaiting here means
+                    // control is returned to the main UI until there is data to process.
+                    // This is *not* the same as blocking, but we can use the same mental model
+                    // as if it was a blocking call.
+                    int bytesReceived = await mainSocket.ReceiveAsync(buffer, SocketFlags.None);
+                    ParseData(byteData, bytesReceived);
+                }
+                catch (ObjectDisposedException)
+                {
+                    // This exception occurs when the application is stopping and the socket is closed.
+                    // This signals that we should exit the loop.
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("OnReceive Exception: " + ex.Message);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Configures the listening socket.
         /// </summary>
         private void ConfigureSocket()
         {
@@ -76,28 +109,6 @@ namespace VirtualMeetingMonitor
             mainSocket.Close();
         }
 
-        private void OnReceive(IAsyncResult ar)
-        {
-            try
-            {
-                int nReceived = mainSocket.EndReceive(ar);
-                ParseData(byteData, nReceived);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("OnReceive Exception: " + ex.Message);
-            }
-
-            try
-            {
-                //Another call to BeginReceive so that we continue to receive the incoming packets
-                mainSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, OnReceive, null);
-            }
-            catch (ObjectDisposedException)
-            {
-            }
-        }
-
         private void ParseData(byte[] byteData, int nReceived)
         {
             IPHeader ipHeader = new IPHeader(byteData, nReceived, localIp);
@@ -106,7 +117,6 @@ namespace VirtualMeetingMonitor
                 OutsideUDPTafficeReceived?.Invoke(ipHeader);
             }
         }
-
 
         private bool isOutsideUDPTaffice(IPHeader ipHeader)
         {
@@ -123,7 +133,5 @@ namespace VirtualMeetingMonitor
             }
             return retVal;
         }
-
-
     }
 }
