@@ -26,7 +26,7 @@ namespace VirtualMeetingMonitor
         
         private HttpStatusCode CallAPI( LightRGB body )
         {
-            var client = new RestClient(url);
+            RestClient client = new RestClient(url);
             const string api = "/api/light/state";
             var request = new RestRequest(api, Method.POST);
             request.AddJsonBody(body);
