@@ -50,30 +50,23 @@ namespace VirtualMeetingMonitor
 
         private void Meeting_OnMeetingStarted()
         {
-            byte red = 0;
-            byte green = 255;
-            byte blue = 255;
+            int hue = 0;
+            int sat = 254;
 
             if (meeting.IsTeamsMeeting())
             {
-                red = 0;
-                green = 0;
-                blue = 255;
+                hue = 43690;
             }
             else if (meeting.IsWebExMeeting())
             {
-                red = 0;
-                green = 255;
-                blue = 0;
+                hue = 21845;
             }
             else if (meeting.IsZoomMeeting())
             {
-                red = 255;
-                green = 0;
-                blue = 0;
+                hue = 0;
             }
 
-            onAirSign.TurnOn(red, green, blue);
+            onAirSign.TurnOn(hue, sat);
             LogMeeting("Started");
             BackColor = Color.Green;
 
@@ -125,7 +118,7 @@ namespace VirtualMeetingMonitor
 
         private void onAirOnToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            onAirSign.TurnOn(0, 255, 255);
+            onAirSign.TurnOn(0, 254);
         }
 
         private void onAirOffToolStripMenuItem_Click(object sender, EventArgs e)

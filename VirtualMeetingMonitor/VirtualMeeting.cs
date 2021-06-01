@@ -19,15 +19,17 @@ namespace VirtualMeetingMonitor
                               "207.182.", "209.197.", "210.4.", "216.151." };
 
       readonly string[] DiscordIps = { "162.245.", "213.179." };
+      readonly string[] AWSChimeIps = { "99.77." };
 
         private string MeetingIp = "";
         private bool InMeeting = false;
         private int UdpTotal = 0;
         private int UdpInbound = 0;
         private int UdpOutbound = 0;
-        private int Seconds = 0;
-        private readonly int ThreshHoldPackets = 1;
-        private readonly int ThreshHoldSeconds = 5;
+        private int SecondsNoPackets = 0;
+        private int SecondsWithPackets = 0;
+        private readonly int ThreshHoldPackets = 30;
+        private readonly int ThreshHoldSeconds = 15;
 
         public delegate void Notify();  // delegate
 
@@ -55,8 +57,9 @@ namespace VirtualMeetingMonitor
 
             if (UdpTotal >= ThreshHoldPackets)
             {
-                Seconds = 0;
-                if (InMeeting == false )
+                SecondsNoPackets = 0;
+                SecondsWithPackets++;
+                if (InMeeting == false && (GetMeetingType() != "Unknown" || SecondsWithPackets >= ThreshHoldSeconds ))
                 {
                     InMeeting = true;
                     OnMeetingStarted?.Invoke();
@@ -64,8 +67,9 @@ namespace VirtualMeetingMonitor
             }
             else
             {
-                Seconds++;
-                if (InMeeting == true && Seconds >= ThreshHoldSeconds)
+                SecondsNoPackets++;
+                SecondsWithPackets = 0;
+                if (InMeeting == true && SecondsNoPackets >= ThreshHoldSeconds)
                 {
                     InMeeting = false;
                     OnMeetingEnded?.Invoke();
@@ -80,6 +84,7 @@ namespace VirtualMeetingMonitor
             IsTeamsMeeting() ? "Teams" :
             IsWebExMeeting() ? "WebEx" :
             IsZoomMeeting() ? "Zoom" :
+            IsAWSChimeMeeting() ? "AWS Chime" :
             IsDiscordMeeting() ? "Discord" : "Unknown";
         }
 
@@ -90,6 +95,8 @@ namespace VirtualMeetingMonitor
         public bool IsZoomMeeting() => ZoomIps.Any(t => MeetingIp.StartsWith(t));
 
         public bool IsDiscordMeeting() => DiscordIps.Any(t => MeetingIp.StartsWith(t));
+
+        public bool IsAWSChimeMeeting() => AWSChimeIps.Any(t => MeetingIp.StartsWith(t));
 
         public string GetIP() => MeetingIp;
 
